@@ -1,1 +1,8 @@
-
+%%sql
+postgresql:///games
+    SELECT year, CAST(AVG(critic_score) AS numeric(36,2)) AS avg_critic_score
+    FROM reviews AS r
+    RIGHT JOIN game_sales AS g ON g.game = r.game
+    GROUP BY year
+    ORDER BY avg_critic_score DESC
+    LIMIT 10;
