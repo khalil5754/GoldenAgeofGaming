@@ -12,7 +12,7 @@ postgresql:///games
 --However, this does not account for the number of games reviewed in each year, potentially leading to bias - see next query:
 ________________________________________________________________________________________________________________________________________________________
 
---FINDING THE YEARS WITH MORE THAN 4 TOTAL GAMES REVIEWED IN THE YEAR (USER SCORES)
+--FINDING THE YEARS WITH MORE THAN 4 TOTAL GAMES REVIEWED IN THE YEAR FOR USER SCORES
   
   SELECT g.year, COUNT(g.game) AS num_games, ROUND(AVG(r.user_score),2) AS avg_user_score
   FROM game_sales g
