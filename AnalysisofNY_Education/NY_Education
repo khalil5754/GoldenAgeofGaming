@@ -1,0 +1,35 @@
+%%sql
+postgresql:///schools
+    SELECT * 
+    FROM 
+        schools
+    LIMIT 10;
+________________________________________________________________________________________________________________________________________________________
+--'Percent Tested' category appears to have some NULL entries. Lets see how many, relative to the total amount of schools, in case it's a problem later.
+
+    SELECT 
+        COUNT(*) AS num_tested_missing,
+        (SELECT COUNT(*) FROM schools) AS num_schools
+    FROM 
+        schools
+    WHERE 
+        percent_tested IS NULL
+
+--Hmm, twenty schools don't have any entries of 375 schools. Shouldn't be a problem!
+
+________________________________________________________________________________________________________________________________________________________
+--Lets see what the best schools in NY are, judging by their SAT scores.
+
+    SELECT
+    (average_reading + average_writing + average_math) AS avg_sat,
+    school_name
+    FROM schools
+    GROUP BY school_name
+    ORDER BY avg_sat DESC
+    LIMIT 10;
+
+--This will give us the top 10 schools in NY. #1 is Stuyvesant.
+_______________________________________________________________________________________________________________________________________________________
+
+
+
