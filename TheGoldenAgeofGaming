@@ -1,9 +1,10 @@
 %%sql
 postgresql:///games
-    SELECT year, CAST(AVG(critic_score) AS numeric(36,2)) AS avg_critic_score
+    SELECT
+        year, 
+        CAST(AVG(critic_score) AS numeric(36,2)) AS avg_critic_score
     FROM reviews AS r
-        RIGHT JOIN game_sales AS g
-        ON g.game = r.game
+        RIGHT JOIN game_sales AS g ON g.game = r.game
     GROUP BY year
     ORDER BY avg_critic_score DESC
     LIMIT 10;
@@ -14,10 +15,12 @@ ________________________________________________________________________________
 
 --FINDING THE YEARS WITH MORE THAN 4 TOTAL GAMES REVIEWED IN THE YEAR FOR USER SCORES
   
-  SELECT g.year, COUNT(g.game) AS num_games, ROUND(AVG(r.user_score),2) AS avg_user_score
+  SELECT
+      g.year,
+      COUNT(g.game) AS num_games,
+      ROUND(AVG(r.user_score),2) AS avg_user_score
   FROM game_sales g
-         INNER JOIN reviews r
-         ON g.game = r.game
+      INNER JOIN reviews r ON g.game = r.game
   GROUP BY g.year
   HAVING COUNT(g.game) > 4
   ORDER BY avg_user_score DESC
@@ -25,20 +28,22 @@ ________________________________________________________________________________
 
 --USING CTE TO WRITE THE SAME QUERY, BUT FOR CRITIC SCORES
 
-WITH cte AS (SELECT COUNT(*) AS games_num, year, game_sales.game
-         FROM game_sales 
-         LEFT JOIN reviews ON game_sales.game = reviews.game
-         GROUP BY year, game_sales.game)
+WITH cte AS (
+    SELECT COUNT(*) AS games_num,
+           year, game_sales.game
+    FROM game_sales 
+    LEFT JOIN reviews ON game_sales.game = reviews.game
+    GROUP BY year, game_sales.game)
     
     
-    SELECT year, CAST(AVG(critic_score) AS numeric(36,2)) AS avg_critic_score
-    FROM cte AS tr
+    SELECT year,
+           CAST(AVG(critic_score) AS numeric(36,2)) AS avg_critic_score
+    FROM cte AS g
     LEFT JOIN reviews AS r 
-    ON tr.game = r.game
+    ON g.game = r.game
     WHERE games_num > 4
     GROUP BY year
     ORDER BY avg_critic_score DESC
-    
     LIMIT 10;
  _________________________________________________________________________________________________________________________________________________________
  
