@@ -9,4 +9,4 @@ postgresql:///games
     LIMIT 10;
 
 --This query will yield the average critic scores grouped by each year. This gives us a result (found in PNG), that is ordered by highest average score.
---However, this does not account for the number of games reviewed in each year, potentially leading to bias.
+--However, this does not account for the number of games reviewed in each year, potentially leading to bias - see next branch.
