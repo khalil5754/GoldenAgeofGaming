@@ -1,8 +1,7 @@
 %%sql
 postgresql:///schools
     SELECT * 
-    FROM 
-        schools
+    FROM schools
     LIMIT 10;
 ________________________________________________________________________________________________________________________________________________________
 --'Percent Tested' category appears to have some NULL entries. Lets see how many, relative to the total amount of schools, in case it's a problem later.
@@ -10,10 +9,8 @@ ________________________________________________________________________________
     SELECT 
         COUNT(*) AS num_tested_missing,
         (SELECT COUNT(*) FROM schools) AS num_schools
-    FROM 
-        schools
-    WHERE 
-        percent_tested IS NULL
+    FROM schools
+    WHERE percent_tested IS NULL
 
 --Hmm, twenty schools don't have any entries of 375 schools. Shouldn't be a problem!
 
@@ -30,6 +27,11 @@ ________________________________________________________________________________
 
 --This will give us the top 10 schools in NY. #1 is Stuyvesant.
 _______________________________________________________________________________________________________________________________________________________
-
-
-
+--Now, it's time to narrow things down and figure out the top math schools in Brooklyn specifically 
+    SELECT school_name,
+    average_math
+    FROM schools
+    WHERE borough = 'Brooklyn'
+    ORDER BY average_math DESC
+    LIMIT 5;
+--Bop!
