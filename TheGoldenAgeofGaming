@@ -2,9 +2,11 @@
 postgresql:///games
     SELECT year, CAST(AVG(critic_score) AS numeric(36,2)) AS avg_critic_score
     FROM reviews AS r
-    RIGHT JOIN game_sales AS g ON g.game = r.game
+        RIGHT JOIN game_sales AS g
+        ON g.game = r.game
     GROUP BY year
     ORDER BY avg_critic_score DESC
     LIMIT 10;
 
-
+--This query will yield the average critic scores grouped by each year. This gives us a result (found in PNG), that is ordered by highest average score.
+--However, this does not account for the number of games reviewed in each year, potentially leading to bias.
