@@ -35,8 +35,11 @@ WITH cte AS (SELECT COUNT(*) AS games_num, year, game_sales.game
     FROM cte AS tr
     LEFT JOIN reviews AS r 
     ON tr.game = r.game
-    WHERE 4 > games_num
+    WHERE games_num > 4
     GROUP BY year
-    ORDER BY avg_critic_score
+    ORDER BY avg_critic_score DESC
     
     LIMIT 10;
+ _________________________________________________________________________________________________________________________________________________________
+ 
+ --The best golden age of gaming is (judging by critic scores) 1990!
