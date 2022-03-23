@@ -9,4 +9,34 @@ postgresql:///games
     LIMIT 10;
 
 --This query will yield the average critic scores grouped by each year. This gives us a result (found in PNG), that is ordered by highest average score.
---However, this does not account for the number of games reviewed in each year, potentially leading to bias - see next branch.
+--However, this does not account for the number of games reviewed in each year, potentially leading to bias - see next query:
+________________________________________________________________________________________________________________________________________________________
+
+--FINDING THE GAMING YEARS WITH MORE THAN 4 TOTAL GAMES REVIEWED IN THE YEAR (USER SCORES)
+  
+  SELECT g.year, COUNT(g.game) AS num_games, ROUND(AVG(r.user_score),2) AS avg_user_score
+  FROM game_sales g
+         INNER JOIN reviews r
+         ON g.game = r.game
+  GROUP BY g.year
+  HAVING COUNT(g.game) > 4
+  ORDER BY avg_user_score DESC
+  LIMIT 10;
+
+--USING CTE TO WRITE THE SAME QUERY, BUT FOR CRITIC SCORES
+
+WITH cte AS (SELECT COUNT(*) AS games_num, year, game_sales.game
+         FROM game_sales 
+         LEFT JOIN reviews ON game_sales.game = reviews.game
+         GROUP BY year, game_sales.game)
+    
+    
+    SELECT year, CAST(AVG(critic_score) AS numeric(36,2)) AS avg_critic_score
+    FROM cte AS tr
+    LEFT JOIN reviews AS r 
+    ON tr.game = r.game
+    WHERE 4 > games_num
+    GROUP BY year
+    ORDER BY avg_critic_score
+    
+    LIMIT 10;
