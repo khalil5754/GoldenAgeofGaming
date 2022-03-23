@@ -6,3 +6,5 @@ postgresql:///games
     GROUP BY year
     ORDER BY avg_critic_score DESC
     LIMIT 10;
+
+
